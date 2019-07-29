@@ -132,7 +132,7 @@ class AddStaff extends Component {
                             type="tel"
                             name="phoneNo"
                             id="phoneNo"
-                            maxlength="11"
+                            maxLength="11"
                             placeholder="Phone No"
                             onChange={this.onChanged}
                           />
@@ -141,7 +141,8 @@ class AddStaff extends Component {
                       <Col md={{ size: 6 }}>
                         <FormGroup>
                           <Label for="Department">Department</Label>
-                          <Input type="select" name="department" id="department" onChange={this.onChanged}>
+                          <Input type="select" name="department" id="department" 
+                            onChange={this.onChanged}>
                             <option value="">Select Department</option>
                             <option value="Sales">Sales</option>
                             <option value="Administration">Administration</option>

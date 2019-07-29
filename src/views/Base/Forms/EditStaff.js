@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as dateFns from 'date-fns';
 // import { Redirect } from "react-router-dom";
 
 import {
@@ -23,17 +22,19 @@ import {
     Form,
 } from 'reactstrap';
 import store from '../../../components/Store';
-import { editCustomer, editCustomerInit } from "../../../components/Store/actions/customer";
+import { editStaffInit, editStaff } from "../../../components/Store/actions/staff";
 
-class Edit_Customer extends Component {
+class Edit_Staff extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fullName: "",
-            phoneNo: "",
-            email: "",
-            entryDate: "",
-            registrationDate: "",
+            fullName: '',
+            email: '',
+            phoneNo: '',
+            department: '',
+            operatorLevel: '',
+            dateEmployed: '',
+            entryDate: '',
             success: false
         }
 
@@ -48,24 +49,15 @@ class Edit_Customer extends Component {
             }
         });
 
-        // store.pipe(
-        //   filter(val => val),
-        //   take(1)
-        // ).subscribe(() => this.toggleSuccess)
-
         this.toggleSuccess = this.toggleSuccess.bind(this);
 
     }
     componentDidMount = () => {
-        const customerId = +this.props.match.params.customerId;;
-        this.props.onEditCustomerInit(customerId);
-
+        const staffId = +this.props.match.params.staffId;;
+        this.props.onEditStaffInit(staffId);
 
     };
 
-    // cancel = () => {
-    //    +this.props.history.goBack("/customers/all-customers");
-    // }
 
     toggleSuccess() {
         this.setState({
@@ -80,24 +72,20 @@ class Edit_Customer extends Component {
 
     };
 
-    // onImgChanged = e => {
-    //   this.setState({
-    //     imageUrl: e.target.files[0]
-    //   });
-    // };
     save = e => {
         e.preventDefault();
         const formData = {
             fullName: this.state.fullName,
             phoneNo: this.state.phoneNo,
             email: this.state.email,
-            entryDate: dateFns.format(this.state.entryDate,'YYYY-MM-DD'),
-            registrationDate:dateFns.format( this.state.registrationDate,'YYYY-MM-DD')
+            operatorLevel: this.state.operatorLevel,
+            department: this.state.department,
+            entryDate: this.state.entryDate,
+            dateEmployed: this.state.dateEmployed
         };
         this.props.onEditCustomer(JSON.stringify(formData));
-        console.log(formData);
-        
     };
+
     render() {
 
         return (
@@ -105,9 +93,8 @@ class Edit_Customer extends Component {
                 <Row>
                     <Col md={{ size: 12 }}>
                         <Card>
-                            <CardHeader tag="h2">Edit Customer</CardHeader>
+                            <CardHeader tag="h2">Edit Staff</CardHeader>
                             <CardBody>
-                                {/* {this.props.customerUpdated && !this.state.customerEditActionAction ? this.openModal() : ""} */}
                                 <Form onSubmit={this.save} action="POST" encType="application/json">
                                     {this.props.error && (
                                         < Alert color="danger">{this.props.error.msg}</Alert>
@@ -122,7 +109,7 @@ class Edit_Customer extends Component {
                                                         name="fullName"
                                                         id="fullName"
                                                         placeholder="FullName"
-                                                        defaultValue={this.props.customer && this.props.customer.fullName}
+                                                        defaultValue={this.props.staff && this.props.staff.fullName}
                                                         onChange={this.onChanged}
                                                     />
                                                 </FormGroup>
@@ -135,7 +122,7 @@ class Edit_Customer extends Component {
                                                         name="email"
                                                         id="email"
                                                         placeholder="Email Address"
-                                                        defaultValue={this.props.customer && this.props.customer.email}
+                                                        defaultValue={this.props.staff && this.props.staff.email}
                                                         onChange={this.onChanged}
                                                     />
                                                 </FormGroup>
@@ -152,84 +139,87 @@ class Edit_Customer extends Component {
                                                         type="tel"
                                                         name="phoneNo"
                                                         id="phoneNo"
-                                                        placeholder="Phone No"
                                                         maxLength="11"
-                                                        defaultValue={this.props.customer && this.props.customer.phoneNo}
-                                                        onChange={this.onChanged} />
+                                                        placeholder="Phone No"
+                                                        defaultValue={this.props.staff && this.props.staff.phoneNo}
+                                                        onChange={this.onChanged}
+                                                    />
                                                 </FormGroup>
                                             </Col>
-                                            {/* <Col md={{ size: 6 }}>
-                        <FormGroup>
-                          <Label for="Customer Photo">Profile Picture</Label>
-                          <Input
-                            type="file"
-                            name="imageUrl"
-                            id="profilePic"
-                            accept=".jpg, .jpeg, .png"
-                            onChange={this.onImgChanged}
-                          />
-                          <FormText color="muted">
-                            Images must be png, jpg or jpeg format.
-											</FormText>
-                        </FormGroup>
-                      </Col> */}
+                                            <Col md={{ size: 6 }}>
+                                                <FormGroup>
+                                                    <Label for="Department">Department</Label>
+                                                    <Input type="select" name="department" id="department"
+                                                        defaultValue={this.props.staff && this.props.staff.department}
+                                                        onChange={this.onChanged}>
+                                                        <option value="">Select Department</option>
+                                                        <option value="Sales">Sales</option>
+                                                        <option value="Administration">Administration</option>
+                                                        <option value="Operations">Operations</option>
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
                                         </Row>
                                     </FormGroup>
+
                                     <FormGroup>
                                         <Row>
                                             <Col md={{ size: 6 }}>
                                                 <FormGroup>
-                                                    <Label for="Entry date">Entry Date</Label>
-                                                    <Input
-                                                        onChange={this.onChanged}
-                                                        type="date"
-                                                        name="entryDate"
-                                                        id="entryDate"
-                                                        defaultValue={this.props.customer && this.props.customer.entryDate}
-                                                    >
+                                                    <Label for="operator level">Operator level</Label>
+                                                    <Input type="select" name="operatorLevel" id="operatorLevel"
+                                                        defaultValue={this.props.staff && this.props.staff.operatorLevel}
+                                                        onChange={this.onChanged}>
+                                                        <option value="">Select Operator Level</option>
+                                                        <option value="inputter">Inputter</option>
+                                                        <option value="Authorizer">Authorizer</option>
+                                                        <option value="SuperAdmin">SuperAdmin</option>
                                                     </Input>
                                                 </FormGroup>
-
                                             </Col>
                                             <Col md={{ size: 6 }}>
                                                 <FormGroup>
-                                                    <Label for="Registration date">Registration Date</Label>
+                                                    <Label for="Entry date">Entry Date</Label>
                                                     <Input
+                                                        defaultValue={this.props.staff && this.props.staff.entryDate}
                                                         onChange={this.onChanged}
                                                         type="date"
-                                                        name="registrationDate"
-                                                        id="registrationDate"
-                                                        defaultValue={this.props.customer && this.props.customer.registrationDate}>
-
+                                                        name="entryDate"
+                                                        id="entryDate">
                                                     </Input>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                     </FormGroup>
+                                    <Col md={{ size: 6 }}>
+                                        <FormGroup>
+                                            <Label for="Date Employed">Date Employed</Label>
+                                            <Input
+                                                onChange={this.onChanged}
+                                                type="date"
+                                                name="dateEmployed"
+                                                id="dateEmployed"
+                                                defaultValue={this.props.staff && this.props.staff.dateEmployed}>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
                                     {this.props.isLoading ? (
                                         <Spinner color="danger" />
-                                    ) : (
-                                            <div>
-                                                <Button color="success">Update</Button>
-                                            </div>
+                                    )
+                                        :
+                                        (
+                                            <Button color="success">Update</Button>
                                         )}
+
                                 </Form>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Card>
-                            <CardBody>
                                 <Modal isOpen={this.state.success} toggle={this.toggleSuccess}
                                     className={'modal-success ' + this.props.className}>
-                                    <ModalHeader toggle={this.toggleSuccess}>DONE</ModalHeader>
+                                    <ModalHeader toggle={this.toggleSuccess}>Modal title</ModalHeader>
                                     <ModalBody>
-                                        Update Successful!
-                                     </ModalBody>
+                                        Registration Successful!
+                  </ModalBody>
                                     <ModalFooter>
-                                        <Button color="secondary" toggle={this.toggleSuccess}>Ok</Button>
+                                        <Button color="secondary" onClick={this.toggleSuccess}>Ok</Button>
                                     </ModalFooter>
                                 </Modal>
                             </CardBody>
@@ -242,22 +232,23 @@ class Edit_Customer extends Component {
     }
 }
 const mapStateToProps = state => ({
-    customer: state.customer.customer,
-    isLoading: state.customer.isLoading,
-    customerUpdated: state.customer.customerUpdated,
-    error: state.customer.error
+    staff: state.staff.staff,
+    isLoading: state.staff.isLoading,
+    staffUpdated: state.staff.staffUpdated,
+    error: state.staff.error
 });
 
 const mapDispatchToProps = dispatch => ({
-    onEditCustomerInit: (customerId) => dispatch(editCustomerInit(customerId)),
-    onEditCustomer: customerData => dispatch(editCustomer(customerData))
+
+    onEditStaffInit: (staffId) => dispatch(editStaffInit(staffId)),
+    onEditStaff: staffData => dispatch(editStaff(staffData))
 });
 
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Edit_Customer);
+)(Edit_Staff);
 
 
 

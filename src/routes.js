@@ -1,8 +1,10 @@
 import React from 'react';
+
 //Staff
 const AllStaff = React.lazy(() => import('./views/Base/Cards/AllStaff'));
 const AddStaff = React.lazy(() => import('./views/Base/Forms/AddStaff'));
 const StaffDetails = React.lazy(() => import('./views/Base/Cards/StaffDetails'));
+const EditStaff = React.lazy(() => import('./views/Base/Forms/EditStaff'));
 
 const Charts = React.lazy(() => import('./views/Charts'));
 const Dashboard = React.lazy(() => import('./views/Dashboard'));
@@ -11,7 +13,7 @@ const AddCustomer = React.lazy(() => import('./views/Icons/Add-customer/Add-Cust
 const Customers = React.lazy(() => import('./views/Icons/SimpleLineIcons/AllCustomers'));
 const CustomerDetails =React.lazy(() => import('./views/Icons/FontAwesome/CustomerDetails'));
 const EditCustomer =React.lazy(() => import('./views/Icons/Add-customer/EditCustomer'));
-const DeleteCustomer =React.lazy(() => import('./views/Icons/FontAwesome/DeleteCustomer'));
+// const DeleteCustomer =React.lazy(() => import('./views/Icons/FontAwesome/DeleteCustomer'));
 
 const Alerts = React.lazy(() => import('./views/Notifications/Alerts'));
 const Badges = React.lazy(() => import('./views/Notifications/Badges'));
@@ -25,18 +27,19 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
   //Staff routes
-  { path: '/staff', exact: true, name: 'Staff' },
+  { path: '/staff', exact: true, name: 'Staff',component: AllStaff },
   { path: '/staff/all-staff', name: 'All Staff', component: AllStaff },
   { path: '/staff/add-staff', name: 'Add Staff', component: AddStaff },
-  { path: '/staff/:staffId',exact: true, name: 'staff details', component: StaffDetails },
+  { path: '/staffs/:staffId',exact: true, name: 'staff details', component: StaffDetails },
+  { path: '/staff/edit/:staffId',exact: true, name: ' Edit Staff', component: EditStaff },
 
   //customer routes
   { path: '/customer', exact: true, name: 'Customer',component: Customers},
   { path: '/customer/add-customer',exact: true, name: 'Add customer', component: AddCustomer },
   { path: '/customer/all-customer', exact:true, name: 'All customers', component: Customers },
-  { path: '/customers/:customerId', exact: true, name: 'customer details', component: CustomerDetails },
-  { path: '/customer/edit/:customerId',exact: true, name: 'Edit Customer', component: EditCustomer },
-  { path: '/customer/del/:customerId', exact: true, name: 'customer delete', component: DeleteCustomer },
+  { path: '/customer/:customerId', exact: true, name: 'customer details', component: CustomerDetails },
+  { path: '/customers/edit/:customerId',exact: true, icon: 'icon-trash', name: 'Edit Customer', component: EditCustomer },
+  // { path: '/customer/del/:customerId', exact: true, name: 'customer delete', component: DeleteCustomer },
 
   //Products
   { path: '/product', exact: true, name: 'Products', component: Alerts },

@@ -40,6 +40,7 @@ const reducer = (state = initialState, action) => {
 			case types.EDIT_STAFF_INIT:
 			return {
 				...state,
+				isLoading: false,
 				staffUpdated: false,
 				staff: action.staff,
 				error: null

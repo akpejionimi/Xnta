@@ -1,5 +1,6 @@
 import axios from "../../utils/axios-base";
 import * as types from "./types";
+import * as dateFns from 'date-fns';
 
 export const loading = () => {
 	return {
@@ -27,10 +28,10 @@ export const getCustomers = () => {
 		dispatch(loading());
 		axios
 			.get("/customer")
-			.then(res => {
+ 			.then(res => {
 				dispatch(getCustomersSuccess(res.data));
 			})
-			.catch(err => dispatch(errorOccured(err)));
+			.catch(err => dispatch(errorOccured(err.res.data)));
 	};
 };
 
@@ -40,7 +41,7 @@ export const getSingleCustomer = customerId => {
 		dispatch(loading());
 		axios
 			.get(`/customer/${customerId}`)
-			.then(res => {
+			.then(res => {	
 				dispatch({ type: types.GET_SINGLE_CUSTOMER_SUCCESS, customer: res.data });
 			})
 			.catch(err => dispatch(errorOccured(err)));
@@ -49,19 +50,18 @@ export const getSingleCustomer = customerId => {
 export const editCustomerInit = customerId => {
 	return (dispatch, getState) => {
 		dispatch(loading());
-		const customerId = getState().customer.customerId
-		// 	const config = {
-		// 	headers: {"Content-Type": "application/json"}
-		// };
+			const config = {
+			headers: {"Content-Type": "application/json"}
+		};
 		axios
-			.get(`/customer/edit/${customerId}`)
+			.get(`/customer/edit/${customerId}`,config)
 			.then(res => {
-				console.log(res);
-				
-					// dispatch({ type: types.EDIT_CUSTOMER_INIT, payload: res.data });
+					res.data.entryDate = dateFns.format(res.data.entryDate, 'YYYY-MM-DD')
+					res.data.registrationDate = dateFns.format(res.data.registrationDate, 'YYYY-MM-DD')
+					dispatch({ type: types.EDIT_CUSTOMER_INIT, customer: res.data });
 				
 			})
-			.catch(err => dispatch(errorOccured(err)));
+			.catch(err => dispatch(errorOccured(err.response.data)));
 	};
 };
 
@@ -74,7 +74,7 @@ export const editCustomerDone= () => {
 export const editCustomer = (customerData) => {
 	return (dispatch, getState) => {
 		dispatch(loading());
-		const customerId = getState().customer.customerId;
+		const customerId = getState().customer.customer.customerId;
 
 		const config = {
 			headers: {"Content-Type": "application/json"}

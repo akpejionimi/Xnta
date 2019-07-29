@@ -8,12 +8,15 @@ import {
     Row,
     Col,
     CardHeader,
-    Table
+    Table,
+    Button
 } from "reactstrap";
 
 function StaffRow(props) {
     const staff = props.staff
-    const StaffLink = `/staff/${staff.staffId}`
+    const StaffLink = `/staffs/${staff.staffId}`
+    const staffEditLink = `/staff/edit/${staff.staffId}`
+    const staffDelLink = `/staff/del/${staff.staffId}`
   
     const getBadge = (entryDate) => {
       return entryDate === 'Active' ? 'success' :
@@ -32,6 +35,9 @@ function StaffRow(props) {
         <td>{staff.department}</td>
         <td>{staff.dateEmployed}</td>
         <td><Link to={StaffLink}><Badge color={getBadge(staff.entryDate)}>{staff.entryDate}</Badge></Link></td>
+        <td><Link to={staffEditLink}><Button color="primary">Edit</Button></Link>
+          <Link to={staffDelLink}><Button color="danger">Delete</Button></Link>
+          </td>
   
       </tr>
     )
@@ -56,6 +62,7 @@ const StaffList = ({staffs}) => {
                     <th scope="col">Department</th>
                     <th scope="col">Date Employed</th>
                     <th scope="col">Entry Date</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>

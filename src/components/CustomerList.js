@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+// import {connect} from 'react-redux'
 // import Moment from "react-moment";
 import {
   Card,
@@ -12,11 +13,13 @@ import {
   Button
 } from "reactstrap";
 
+// import { deleteCustomer, deleteCustomerInit } from "../components/Store/actions/customer";
+
 function CustomerRow(props) {
   const customer = props.customer
-  const CustomerLink = `/customers/${customer.customerId}`
-  const CustomerEditLink = `/customer/edit/${customer.customerId}`
-  const CustomerDeleteLink = `/customer/del/${customer.customerId}`
+  const CustomerLink = `/customer/${customer.customerId}`
+  const CustomerEditLink = `/customers/edit/${customer.customerId}`
+  // const CustomerDeleteLink = `/customer/del/${customer.customerId}`
 
   const getBadge = (entryDate) => {
     return entryDate === 'Active' ? 'success' :
@@ -25,7 +28,6 @@ function CustomerRow(props) {
           entryDate === 'Banned' ? 'danger' :
             'primary'
   }
-
   return (
     <tr key={customer.customerId.toString()}>
       <th scope="row"><Link to={CustomerLink}>{customer.customerId}</Link></th>
@@ -36,7 +38,7 @@ function CustomerRow(props) {
       <td>{customer.registrationDate}</td>
       <td><Link to={CustomerLink}><Badge color={getBadge(customer.entryDate)}>{customer.entryDate}</Badge></Link></td>
       <td><Link to={CustomerEditLink}><Button color="primary">Edit</Button></Link>
-          <Link to={CustomerDeleteLink}><Button color="danger">Delete</Button></Link>
+          {/* <Button onClick={this.props.customer.customerId} color="danger">Remove</Button> */}
           </td>
     </tr>
   )
@@ -75,30 +77,23 @@ const CustomerList = ({ customers }) => {
         </Card>
       </Col>
     </Row>
-    // <CardColumns>
-    // 	{customers.map(customer => (
-    // 		<NavLink key={customer.customerId} to={`/customers/${customer.customerId}`} className="nav-link">
-    // 			<Card className="Customer-card">
-    // 				<CardBody>
-    //                     <CardTitle>{customer.fullName}
-    //                     {customer.email}
-    //                     {customer.phoneNo}
-    //                     {customer.accountNo}
-    //                     {customer.entryDate}
-    //                     {customer.registrationDate}
-    //                     </CardTitle>
-    // 				</CardBody>
-    // 				<CardFooter>
-    // 					<small className="text-muted">
-    // 						Last updated <Moment fromNow>{customer.updatedAt}</Moment>
-    // 					</small>
-    // 				</CardFooter>
-    // 			</Card>
-    // 		</NavLink>
-    // 	))}
-    // </CardColumns>
+ 
   );
 };
+// const mapStateToProps = state => ({
+//   customer: state.customer.customer,
+//   customerDeleted: state.customer.customerDeleted
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   onDeleteCustomerInit: (customerId) => dispatch(deleteCustomerInit(customerId)),
+//   onDeleteCustomer: customerId => dispatch(deleteCustomer(customerId))
+// });
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(CustomerList);
 
 export default CustomerList;
 

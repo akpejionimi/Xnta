@@ -40,6 +40,7 @@ const reducer = (state = initialState, action) => {
 			case types.EDIT_CUSTOMER_INIT:
 			return {
 				...state,
+				isLoading: false,
 				customerUpdated: false,
 				customer: action.customer,
 				error: null

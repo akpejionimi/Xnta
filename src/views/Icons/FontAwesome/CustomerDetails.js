@@ -17,6 +17,7 @@ class CustomerDetails extends Component {
     componentDidMount = () => {
         const customerId = +this.props.match.params.customerId;
         this.props.onGetSingleCustomer(customerId);
+        
     };
 
     render() {
