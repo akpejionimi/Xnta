@@ -62,7 +62,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onDeleteCustomerInit: () => dispatch(deleteCustomerInit()),
+    onDeleteCustomerInit: (customerId) => dispatch(deleteCustomerInit(customerId)),
     onDeleteCustomer: customerId => dispatch(deleteCustomer(customerId))
 });
 

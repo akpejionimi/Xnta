@@ -31,6 +31,8 @@ class Add_Customer extends Component {
       fullName: "",
       phoneNo: "",
       email: "",
+      status: "",
+      gender: "",
       entryDate: "",
       registrationDate: "",
       success: false
@@ -81,6 +83,8 @@ class Add_Customer extends Component {
       fullName: this.state.fullName,
       phoneNo: this.state.phoneNo,
       email: this.state.email,
+      status: this.state.status,
+      gender: this.state.gender,
       entryDate: this.state.entryDate,
       registrationDate: this.state.registrationDate
     };
@@ -144,6 +148,18 @@ class Add_Customer extends Component {
                             onChange={this.onChanged} />
                         </FormGroup>
                       </Col>
+                      <Col md={{ size: 6 }}>
+                      <FormGroup>
+                          <Label for="Status">Status</Label>
+                          <Input type="select" name="status" id="status" 
+                            onChange={this.onChanged}>
+                            <option value="">Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Pending">Pending</option>
+                          </Input>
+                        </FormGroup>
+                        </Col>
                       {/* <Col md={{ size: 6 }}>
                         <FormGroup>
                           <Label for="Customer Photo">Profile Picture</Label>
@@ -159,6 +175,21 @@ class Add_Customer extends Component {
 											</FormText>
                         </FormGroup>
                       </Col> */}
+                    </Row>
+                  </FormGroup>
+                  <FormGroup>
+                    <Row>
+                    <Col md={{ size: 6 }}>
+                      <FormGroup>
+                          <Label for="Gender">Gender</Label>
+                          <Input type="select" name="gender" id="gender" 
+                            onChange={this.onChanged}>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                          </Input>
+                        </FormGroup>
+                        </Col>
                     </Row>
                   </FormGroup>
                   <FormGroup>

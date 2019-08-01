@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
     Spinner,
     Container,
     Card,
     CardBody,
     CardHeader,
+    Button,
     Col,
     Row,
     Table
@@ -17,10 +19,14 @@ class CustomerDetails extends Component {
     componentDidMount = () => {
         const customerId = +this.props.match.params.customerId;
         this.props.onGetSingleCustomer(customerId);
-        
+
     };
 
     render() {
+        const btnStyle = {
+            float: 'right',
+           
+          };
         // const {customer} = customer.find(customer => customer.customerId.toString() === this.props.match.params.customerId)
         const { customer } = this.props;
         const customerDetail = customer ? Object.entries(customer) : [['customerId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
@@ -29,8 +35,10 @@ class CustomerDetails extends Component {
                 <Row>
                     <Col lg={{ size: 6, offset: 3 }} >
                         <Card>
-                            <CardHeader>
-                                <strong><i className="icon-info pr-1"></i>Customer Id: {this.props.match.params.customerId}</strong>
+                            <CardHeader className="tx-right">
+                                {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+                                <Link to={`/customers/edit/${this.props.match.params.customerId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Customer</Button></Link>
+
                             </CardHeader>
                             <CardBody>
                                 <Container>
@@ -40,20 +48,23 @@ class CustomerDetails extends Component {
                                             <Spinner color="dark" />
                                         </div>
                                     ) : (
-                                        <Table responsive striped hover>
-                                            <tbody>
-                                                {
-                                                    customerDetail.map(([key, value]) => {
-                                                        return (
-                                                            <tr key={key}>
-                                                                <td>{`${key}:`}</td>
-                                                                <td><strong>{value}</strong></td>
-                                                            </tr>
-                                                        )
-                                                    })
-                                                }
-                                            </tbody>
-                                        </Table>
+                                            <Table responsive striped hover>
+                                                <tbody>
+                                                    {
+                                                        customerDetail.map(([key, value]) => {
+                                                            return (
+
+                                                                <tr key={key}>
+                                                                    <td>{`${key}:`}</td>
+                                                                    <td><strong>{value}</strong></td>
+                                                                </tr>
+
+
+                                                            )
+                                                        })
+                                                    }
+                                                </tbody>
+                                            </Table>
                                         )}
                                 </Container>
 
@@ -61,6 +72,7 @@ class CustomerDetails extends Component {
                         </Card>
                     </Col>
                 </Row>
+                
             </div>
 
         );

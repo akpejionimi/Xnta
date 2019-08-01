@@ -42,6 +42,10 @@ export const getSingleCustomer = customerId => {
 		axios
 			.get(`/customer/${customerId}`)
 			.then(res => {	
+				res.data.registrationDate = dateFns.format(res.data.registrationDate, 'DD-MM-YYYY')
+				res.data.entryDate = dateFns.format(res.data.entryDate, 'DD-MM-YYYY')
+				res.data.createdAt = dateFns.format(res.data.createdAt, 'DD-MM-YYYY')
+				res.data.updatedAt = dateFns.format(res.data.updatedAt, 'DD-MM-YYYY')
 				dispatch({ type: types.GET_SINGLE_CUSTOMER_SUCCESS, customer: res.data });
 			})
 			.catch(err => dispatch(errorOccured(err)));
@@ -239,17 +243,13 @@ export const deleteCustomer = customerId => {
 				"Content-Type": "application/json"
 			}
 		};
-
-		// if (token) {
-		// 	config.headers["x-access-token"] = token;
-		// }
 		axios
 			.delete(`customer/del/${customerId}`, config)
 			.then(res => {
-				return dispatch({ type: types.DELETE_CUSTOMER_SUCCESS,customer: res.data });
+				return dispatch({ type: types.DELETE_CUSTOMER_SUCCESS, customer:null });
 			})
 			.then(() => {
-				dispatch(deleteCustomerInit());
+				dispatch(getCustomers());
 			})
 			.catch(err => dispatch(errorOccured(err.response.data)));
 	};

@@ -33,7 +33,8 @@ class AddStaff extends Component {
       email: '',
       phoneNo: '',
       department: '',
-      operatorLevel: '',
+      gender: '',
+      status: '',
       dateEmployed: '',
       entryDate: '',
       success: false
@@ -71,7 +72,8 @@ class AddStaff extends Component {
       fullName: this.state.fullName,
       phoneNo: this.state.phoneNo,
       email: this.state.email,
-      operatorLevel: this.state.operatorLevel,
+      gender: this.state.gender,
+      status: this.state.status,
       department: this.state.department,
       entryDate: this.state.entryDate,
       dateEmployed: this.state.dateEmployed
@@ -155,7 +157,7 @@ class AddStaff extends Component {
 
                   <FormGroup>
                     <Row>
-                      <Col md={{ size: 6 }}>
+                      {/* <Col md={{ size: 6 }}>
                         <FormGroup>
                           <Label for="operator level">Operator level</Label>
                           <Input type="select" name="operatorLevel" id="operatorLevel" onChange={this.onChanged}>
@@ -165,7 +167,34 @@ class AddStaff extends Component {
                             <option value="SuperAdmin">SuperAdmin</option>
                           </Input>
                         </FormGroup>
-                      </Col>
+                      </Col> */}
+                      <Col md={{ size: 6 }}>
+                      <FormGroup>
+                          <Label for="Gender">Gender</Label>
+                          <Input type="select" name="gender" id="gender" 
+                            onChange={this.onChanged}>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                          </Input>
+                        </FormGroup>
+                        </Col>
+                       <Col md={{ size: 6 }}>
+                      <FormGroup>
+                          <Label for="Status">Status</Label>
+                          <Input type="select" name="status" id="status" 
+                            onChange={this.onChanged}>
+                            <option value="">Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Pending">Pending</option>
+                          </Input>
+                        </FormGroup>
+                        </Col>
+                        </Row>
+                  </FormGroup>
+                  <FormGroup>
+                    <Row>
                       <Col md={{ size: 6 }}>
                         <FormGroup>
                           <Label for="Entry date">Entry Date</Label>
@@ -177,8 +206,7 @@ class AddStaff extends Component {
                           </Input>
                         </FormGroup>
                       </Col>
-                    </Row>
-                  </FormGroup>
+                   
                   <Col md={{ size: 6 }}>
                     <FormGroup>
                       <Label for="Date Employed">Date Employed</Label>
@@ -190,6 +218,8 @@ class AddStaff extends Component {
                       </Input>
                     </FormGroup>
                   </Col>
+                  </Row>
+                  </FormGroup>
                   <Button color="success">Register</Button>
                 </Form>
                 <Modal isOpen={this.state.success} toggle={this.toggleSuccess}

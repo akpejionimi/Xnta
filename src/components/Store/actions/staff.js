@@ -25,22 +25,17 @@ export const errorOccured = error => {
 
 // This is possible because of the redux-thunk middleware
 export const getStaffs = () => {
-	// Headers
-	const config = {
-		headers: {
-			"Content-Type": "application/json"
-		}
-	};
 	return dispatch => {
 		dispatch(loading());
 		axios
-			.get("/staff", config)
-			.then(res => {
+			.get("/staff")
+ 			.then(res => {
 				dispatch(getStaffSuccess(res.data));
 			})
-			.catch(err => dispatch(errorOccured(err.message)));
+			.catch(err => dispatch(errorOccured(err.res.data)));
 	};
 };
+
 
 export const getSingleStaff = staffId => {
 	return dispatch => {
@@ -48,6 +43,8 @@ export const getSingleStaff = staffId => {
 		axios
 			.get(`/staff/${staffId}`)
 			.then(res => {
+				res.data.createdAt = dateFns.format(res.data.createdAt, 'DD-MM-YYYY')
+				res.data.updatedAt = dateFns.format(res.data.updatedAt, 'DD-MM-YYYY')
 				dispatch({ type: types.GET_SINGLE_STAFF_SUCCESS, staff: res.data });
 			})
 			.catch(err => dispatch(errorOccured(err)));
@@ -115,17 +112,47 @@ export const editStaffDone= () => {
 export const editStaff = (staffData) => {
 	return (dispatch, getState) => {
 		dispatch(loading());
-		const staffId = getState().staff.staffId;
+		const staffId = getState().staff.staff.staffId;
+
 		const config = {
 			headers: {"Content-Type": "application/json"}
 		};
 		axios
-			.put(`staff/edit/${staffId}`,staffData, config)
+			.put(`staff/edit/${staffId}`, staffData, config)
 			.then(res => {
-				return dispatch({ type: types.EDIT_STAFF_SUCCESS });
+				return dispatch({ type: types.EDIT_STAFF_SUCCESS,staff: res.data });
 			}).then(() => {
 				dispatch(editStaffDone());
+			})
+			.catch(err => dispatch(errorOccured(err.res.data)));
+	};
+};
+
+export const deleteStaffInit = () => {
+	return {
+		type: types.DELETE_STAFF_INIT
+	};
+};
+
+export const deleteStaff = staffId => {
+	return (dispatch) => {
+		dispatch(loading());
+		// const token = getState().auth.token;
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json"
+			}
+		};
+		axios
+			.delete(`staff/del/${staffId}`, config)
+			.then(res => {
+				return dispatch({ type: types.DELETE_STAFF_SUCCESS, staff:null });
+			})
+			.then(() => {
+				dispatch(getStaffs());
 			})
 			.catch(err => dispatch(errorOccured(err.response.data)));
 	};
 };
+

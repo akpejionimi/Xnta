@@ -1,51 +1,68 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux'
+import * as dateFns from 'date-fns';
 // import Moment from "react-moment";
 import {
-	Card,
-    CardBody,
-    Badge,
-    Row,
-    Col,
-    CardHeader,
-    Table,
-    Button
+  Card,
+  CardBody,
+  Badge,
+  Row,
+  Col,
+  CardHeader,
+  Table,
+  Button
 } from "reactstrap";
 
+import { deleteStaff, deleteStaffInit } from "../components/Store/actions/staff";
+
+
 function StaffRow(props) {
-    const staff = props.staff
-    const StaffLink = `/staffs/${staff.staffId}`
-    const staffEditLink = `/staff/edit/${staff.staffId}`
-    const staffDelLink = `/staff/del/${staff.staffId}`
-  
-    const getBadge = (entryDate) => {
-      return entryDate === 'Active' ? 'success' :
-        entryDate === 'Inactive' ? 'secondary' :
-          entryDate === 'Pending' ? 'warning' :
-            entryDate === 'Banned' ? 'danger' :
-              'primary'
-    }
-  
-    return (
-      <tr key={staff.staffId.toString()}>
-        <th scope="row"><Link to={StaffLink}>{staff.staffId}</Link></th>
-        <td><Link to={StaffLink}>{staff.fullName}</Link></td>
-        <td>{staff.email}</td>
-        <td>{staff.phoneNo}</td>
-        <td>{staff.department}</td>
-        <td>{staff.dateEmployed}</td>
-        <td><Link to={StaffLink}><Badge color={getBadge(staff.entryDate)}>{staff.entryDate}</Badge></Link></td>
-        <td><Link to={staffEditLink}><Button color="primary">Edit</Button></Link>
-          <Link to={staffDelLink}><Button color="danger">Delete</Button></Link>
-          </td>
-  
-      </tr>
-    )
+  const staff = props.staff
+  const StaffLink = `/staff/${staff.staffId}`
+  const StaffEditLink = `/staff/edit/${staff.staffId}`
+
+
+  const getBadge = (status) => {
+    return status === 'Active' ? 'success' :
+      status === 'Inactive' ? 'secondary' :
+        status === 'Pending' ? 'warning' :
+          status === 'Banned' ? 'danger' :
+            'primary'
+  }
+  return (
+    <tr key={staff.staffId.toString()}>
+      <th scope="row"><Link to={StaffLink}>{staff.staffId}</Link></th>
+      <td><Link to={StaffLink}>{staff.fullName}</Link></td>
+      <td>{staff.email}</td>
+      <td>{staff.phoneNo}</td>
+      <td>{staff.gender}</td>
+      <td>{staff.department}</td>
+      <td><Link to={StaffLink}><Badge color={getBadge(staff.status)}>{staff.status}</Badge></Link></td>
+      <td>{dateFns.format(staff.dateEmployed,"DD-MM-YYYY")}</td>
+      <td>{dateFns.format(staff.entryDate,"DD-MM-YYYY")}</td>
+      <td><Link to={StaffEditLink}><Button color="primary">Edit</Button></Link>
+        <Button onClick={() => props.removeStaff(staff)} color="danger">Remove</Button>
+      </td>
+    </tr>
+  )
+}
+
+class StaffList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+
+    this.removeStaff = this.removeStaff.bind(this)
+  }
+  removeStaff(staff) {
+    console.log(this.props);
+    this.props.onDeleteStaff(staff.staffId)
   }
 
-const StaffList = ({staffs}) => {
-	return (
-        <Row>
+  render() {
+    return (
+      <Row>
         <Col xl={12}>
           <Card>
             <CardHeader>
@@ -55,19 +72,22 @@ const StaffList = ({staffs}) => {
               <Table responsive hover>
                 <thead>
                   <tr>
-                    <th scope="col">staffId</th>
+                    <th scope="col">CustomerId</th>
                     <th scope="col">FullName</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Department</th>
-                    <th scope="col">Date Employed</th>
+                    <th scope="col">status</th>
+                    <th scope="col">registered</th>
                     <th scope="col">Entry Date</th>
                     <th scope="col">Actions</th>
+
                   </tr>
                 </thead>
                 <tbody>
-                  {staffs.map((staff, index) =>
-                    <StaffRow key={index} staff={staff} />
+                  {this.props.staffs.map((staff, index) =>
+                    <StaffRow key={index} staff={staff} removeStaff={this.removeStaff} />
                   )}
                 </tbody>
               </Table>
@@ -75,10 +95,25 @@ const StaffList = ({staffs}) => {
           </Card>
         </Col>
       </Row>
-	);
-};
 
-export default StaffList;
+    );
+  }
+};
+const mapStateToProps = state => ({
+  staff: state.staff.staff,
+  staffDeleted: state.staff.staffDeleted
+});
+
+const mapDispatchToProps = dispatch => ({
+  onDeleteStaffInit: (staffId) => dispatch(deleteStaffInit(staffId)),
+  onDeleteStaff: staffId => dispatch(deleteStaff(staffId))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(StaffList);
+
 
 
 

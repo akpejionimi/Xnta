@@ -4,6 +4,7 @@ const initialState = {
 	customers: [],
 	customer: null,
 	isLoading: false,
+	isEditing: false,
 	customerCreated: false,
 	customerDeleted: false,
 	customerUpdated:false,

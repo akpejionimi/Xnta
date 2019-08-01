@@ -9,7 +9,7 @@ import StaffList from '../../../components/StaffList'
 import { getStaffs } from "../../../components/Store/actions/staff";
 
 
-class Staffs extends Component {
+class Customers extends Component {
   componentDidMount() {
     this.props.onGetStaffs();
   }
@@ -40,8 +40,6 @@ class Staffs extends Component {
 const mapStateToProps = state => ({
   staffs: state.staff.staffs,
   isLoading: state.staff.isLoading,
-  // isAuth: state.auth.token !== null,
-
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -51,5 +49,5 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Staffs);
+)(Customers);
 

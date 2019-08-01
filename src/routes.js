@@ -23,14 +23,14 @@ const User = React.lazy(() => import('./views/Users/User'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/dashboard', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
 
   //Staff routes
   { path: '/staff', exact: true, name: 'Staff',component: AllStaff },
   { path: '/staff/all-staff', name: 'All Staff', component: AllStaff },
   { path: '/staff/add-staff', name: 'Add Staff', component: AddStaff },
-  { path: '/staffs/:staffId',exact: true, name: 'staff details', component: StaffDetails },
+  { path: '/staff/:staffId',exact: true, name: 'staff details', component: StaffDetails },
   { path: '/staff/edit/:staffId',exact: true, name: ' Edit Staff', component: EditStaff },
 
   //customer routes
@@ -38,7 +38,7 @@ const routes = [
   { path: '/customer/add-customer',exact: true, name: 'Add customer', component: AddCustomer },
   { path: '/customer/all-customer', exact:true, name: 'All customers', component: Customers },
   { path: '/customer/:customerId', exact: true, name: 'customer details', component: CustomerDetails },
-  { path: '/customers/edit/:customerId',exact: true, icon: 'icon-trash', name: 'Edit Customer', component: EditCustomer },
+  { path: '/customers/edit/:customerId',exact: true, name: 'Edit Customer', component: EditCustomer },
   // { path: '/customer/del/:customerId', exact: true, name: 'customer delete', component: DeleteCustomer },
 
   //Products

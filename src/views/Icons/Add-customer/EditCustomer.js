@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as dateFns from 'date-fns';
-// import { Redirect } from "react-router-dom";
+import Sub from '../../../subs'
+import { Redirect } from "react-router-dom";
 
 import {
     Button,
@@ -15,10 +16,10 @@ import {
     Label,
     Alert,
     Spinner,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
+    // Modal,
+    // ModalHeader,
+    // ModalBody,
+    // ModalFooter,
     Container,
     Form,
 } from 'reactstrap';
@@ -26,32 +27,19 @@ import store from '../../../components/Store';
 import { editCustomer, editCustomerInit } from "../../../components/Store/actions/customer";
 
 class Edit_Customer extends Component {
+    storeSubscription;
     constructor(props) {
         super(props);
         this.state = {
             fullName: "",
             phoneNo: "",
             email: "",
+            status: "",
+            gender: "",
             entryDate: "",
             registrationDate: "",
-            success: false
+            success: false,
         }
-
-
-        let customerEditAction = false;
-        store.subscribe(() => {
-            const newVal = store.getState().customer.customerUpdated;
-
-            if (customerEditAction !== newVal && newVal) {
-                customerEditAction = newVal;
-                this.toggleSuccess();
-            }
-        });
-
-        // store.pipe(
-        //   filter(val => val),
-        //   take(1)
-        // ).subscribe(() => this.toggleSuccess)
 
         this.toggleSuccess = this.toggleSuccess.bind(this);
 
@@ -60,12 +48,36 @@ class Edit_Customer extends Component {
         const customerId = +this.props.match.params.customerId;;
         this.props.onEditCustomerInit(customerId);
 
+        // let customerEditAction = false;
+        this.storeSubscription = store.subscribe(() => {
+            // const newVal = store.getState().customer.customerUpdated;
+            // if (customerEditAction !== newVal && newVal) {
+            //     customerEditAction = newVal;
+            //     this.toggleSuccess();
+            // }
+            const customer = store.getState().customer.customer
+            if (customer) {
+                this.setState({
+                    fullName: customer.fullName,
+                    phoneNo: customer.phoneNo,
+                    email: customer.email,
+                    status: customer.status,
+                    gender: customer.gender,
+                    entryDate: dateFns.format(customer.entryDate, 'YYYY-MM-DD'),
+                    registrationDate: dateFns.format(customer.registrationDate, 'YYYY-MM-DD')
+                })
+            }
+        });
 
+        this.sub = new Sub()
+        this.sub.subscribe("customer.customer", (value) => {
+            // console.log(value);
+        });
     };
-
-    // cancel = () => {
-    //    +this.props.history.goBack("/customers/all-customers");
-    // }
+    componentWillUnmount() {
+        this.storeSubscription();
+        this.sub.unSubscribe('customer.customer');
+    }
 
     toggleSuccess() {
         this.setState({
@@ -77,26 +89,23 @@ class Edit_Customer extends Component {
         this.setState({
             [e.target.name]: e.target.value
         });
-
     };
 
-    // onImgChanged = e => {
-    //   this.setState({
-    //     imageUrl: e.target.files[0]
-    //   });
-    // };
+
     save = e => {
         e.preventDefault();
         const formData = {
             fullName: this.state.fullName,
             phoneNo: this.state.phoneNo,
             email: this.state.email,
-            entryDate: dateFns.format(this.state.entryDate,'YYYY-MM-DD'),
-            registrationDate:dateFns.format( this.state.registrationDate,'YYYY-MM-DD')
+            status: this.state.status,
+            gender: this.state.gender,
+            entryDate: dateFns.format(this.state.entryDate, 'YYYY-MM-DD'),
+            registrationDate: dateFns.format(this.state.registrationDate, 'YYYY-MM-DD')
         };
         this.props.onEditCustomer(JSON.stringify(formData));
         console.log(formData);
-        
+
     };
     render() {
 
@@ -107,7 +116,7 @@ class Edit_Customer extends Component {
                         <Card>
                             <CardHeader tag="h2">Edit Customer</CardHeader>
                             <CardBody>
-                                {/* {this.props.customerUpdated && !this.state.customerEditActionAction ? this.openModal() : ""} */}
+                                {this.props.customerUpdated && <Redirect to={`/customer/${this.props.customer.customerId}`}/>}
                                 <Form onSubmit={this.save} action="POST" encType="application/json">
                                     {this.props.error && (
                                         < Alert color="danger">{this.props.error.msg}</Alert>
@@ -123,6 +132,7 @@ class Edit_Customer extends Component {
                                                         id="fullName"
                                                         placeholder="FullName"
                                                         defaultValue={this.props.customer && this.props.customer.fullName}
+                                                        // ref={(input)=>this.getFullName = input}
                                                         onChange={this.onChanged}
                                                     />
                                                 </FormGroup>
@@ -218,7 +228,7 @@ class Edit_Customer extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <Col>
                         <Card>
                             <CardBody>
@@ -229,13 +239,13 @@ class Edit_Customer extends Component {
                                         Update Successful!
                                      </ModalBody>
                                     <ModalFooter>
-                                        <Button color="secondary" toggle={this.toggleSuccess}>Ok</Button>
+                                        <Button color="secondary" onClick={this.toggleSuccess}>Ok</Button>
                                     </ModalFooter>
                                 </Modal>
                             </CardBody>
                         </Card>
                     </Col>
-                </Row>
+                </Row> */}
             </Container>
 
         )
@@ -258,6 +268,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(Edit_Customer);
-
-
-
