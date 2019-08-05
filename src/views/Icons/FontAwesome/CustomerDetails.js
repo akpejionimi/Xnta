@@ -36,7 +36,6 @@ class CustomerDetails extends Component {
                     <Col lg={{ size: 6, offset: 3 }} >
                         <Card>
                             <CardHeader className="tx-right">
-                                {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
                                 <Link to={`/customers/edit/${this.props.match.params.customerId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Customer</Button></Link>
 
                             </CardHeader>

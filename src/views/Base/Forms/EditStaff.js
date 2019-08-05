@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as dateFns from 'date-fns';
 import Sub from "../../../subs"
-// import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import {
     Button,
@@ -121,7 +121,7 @@ class Edit_Staff extends Component {
             <Card>
               <CardHeader tag="h2">Edit Staff</CardHeader>
               <CardBody>
-                {/* {this.props.staffCreated && <Redirect to="/dashboard" />} */}
+              {this.props.staffUpdated && <Redirect to={`/staff/${this.props.staff.staffId}`} />}
                 <Form onSubmit={this.save} action="POST" encType="application/json">
                   {this.props.error && (
                     < Alert color="danger">{this.props.error.msg}</Alert>

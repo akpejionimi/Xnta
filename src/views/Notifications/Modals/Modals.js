@@ -1,5 +1,26 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import { connect } from 'react-redux';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  FormGroup,
+  Input,
+  Label,
+  Alert,
+  Spinner,
+  Container,
+  Form,
+} from 'reactstrap';
+import store from '../../../components/Store';
+import { addSavingsProduct, addSavingsProductInit } from "../../../components/Store/actions/savingsproduct";
 
 class Modals extends Component {
 
@@ -8,22 +29,26 @@ class Modals extends Component {
     this.state = {
       modal: false,
       large: false,
-      small: false,
-      primary: false,
-      success: false,
-      warning: false,
-      danger: false,
-      info: false,
+      largeView: false,
+      productName: "",
+      moneyValue: "",
+      productDuration: "",
+      success: false
     };
 
     this.toggle = this.toggle.bind(this);
     this.toggleLarge = this.toggleLarge.bind(this);
-    this.toggleSmall = this.toggleSmall.bind(this);
-    this.togglePrimary = this.togglePrimary.bind(this);
-    this.toggleSuccess = this.toggleSuccess.bind(this);
-    this.toggleWarning = this.toggleWarning.bind(this);
-    this.toggleDanger = this.toggleDanger.bind(this);
-    this.toggleInfo = this.toggleInfo.bind(this);
+    this.toggleLargeView = this.toggleLargeView.bind(this);
+
+    // let savProdCreationAction = false;
+    // store.subscribe(() => {
+    //   const newVal = store.getState().savingsProduct.savingsProductCreated;
+
+    //   if (savProdCreationAction !== newVal && newVal) {
+    //     savProdCreationAction = newVal;
+    //     this.toggleSuccess();
+    //   }
+    // });
   }
 
   toggle() {
@@ -38,41 +63,29 @@ class Modals extends Component {
     });
   }
 
-  toggleSmall() {
+  toggleLargeView() {
     this.setState({
-      small: !this.state.small,
+      largeView: !this.state.largeView,
     });
   }
+  onChanged = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
 
-  togglePrimary() {
-    this.setState({
-      primary: !this.state.primary,
-    });
-  }
+  };
+  save = e => {
+    e.preventDefault();
+    e.target.reset();
+    const formData = {
+      productName: this.state.productName,
+      productDuration: this.state.productDuration,
+      moneyValue: this.state.moneyValue,
+    };
+    this.props.onAddSavingsProduct(JSON.stringify(formData));
+    console.log(formData);
 
-  toggleSuccess() {
-    this.setState({
-      success: !this.state.success,
-    });
-  }
-
-  toggleWarning() {
-    this.setState({
-      warning: !this.state.warning,
-    });
-  }
-
-  toggleDanger() {
-    this.setState({
-      danger: !this.state.danger,
-    });
-  }
-
-  toggleInfo() {
-    this.setState({
-      info: !this.state.info,
-    });
-  }
+  };
 
   render() {
     return (
@@ -81,46 +94,120 @@ class Modals extends Component {
           <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i> Bootstrap Modals
+                <i className="fa fa-align-justify"></i> Savings Products
               </CardHeader>
               <CardBody>
-                <Button onClick={this.toggle} className="mr-1">Launch demo modal</Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                  <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-                  <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Button onClick={this.toggleLarge} className="mr-1">Launch large modal</Button>
+                <Button onClick={this.toggleLarge} className="mr-1">Add Product</Button>
                 <Modal isOpen={this.state.large} toggle={this.toggleLarge}
-                       className={'modal-lg ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleLarge}>Modal title</ModalHeader>
+                  className={'modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleLarge}>Savings Product</ModalHeader>
                   <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
+                    <Container className="card-design">
+                      <Row>
+                        <Col md={{ size: 12 }}>
+                          <Card>
+                            <CardHeader tag="h2">Register Customer</CardHeader>
+                            <CardBody>
+                              {/* {this.props.customerCreated && !this.state.customerCreationAction ? this.openModal() : ""} */}
+                              <Form onSubmit={this.save} action="POST" encType="application/json">
+                                {this.props.error && (
+                                  < Alert color="danger">{this.props.error.msg}</Alert>
+                                )}
+                                <FormGroup>
+                                  <Row>
+                                    <Col md={{ size: 6 }}>
+                                      <FormGroup>
+                                        <Label for="name">Product Name</Label>
+                                        <Input
+                                          type="text"
+                                          name="productName"
+                                          id="productName"
+                                          placeholder="Product Name"
+                                          // required="required"
+                                          onChange={this.onChanged}
+                                        />
+                                      </FormGroup>
+                                    </Col>
+                                    <Col md={{ size: 6 }}>
+                                      <FormGroup>
+                                        <Label for="money Value">Money Value</Label>
+                                        <Input
+                                          type="text"
+                                          placeholder="Enter whole (&#8358;) or zero for none"
+                                          min="0"
+                                          max="10000"
+                                          step="1"
+                                          // value=""
+                                          name="moneyValue"
+                                          id="moneyValue"
+                                          // required="required"
+                                          // type="decimal"
+                                          // name="moneyValue"
+                                          // id="moneyValue"
+                                          // placeholder="Money Value"
+                                          onChange={this.onChanged}
+                                        />
+                                      </FormGroup>
+                                    </Col>
+                                  </Row>
+                                </FormGroup>
+
+                                <FormGroup>
+                                  <Row>
+                                    <Col md={{ size: 6 }}>
+                                      <FormGroup>
+                                        <Label for="Product Duration">Product Duration</Label>
+                                        <Input
+                                          type="text"
+                                          name="productDuration"
+                                          id="productDuration"
+                                          placeholder="Product Duration"
+                                          maxLength="4"
+                                          // required="required"
+                                          onChange={this.onChanged} />
+                                      </FormGroup>
+                                    </Col>
+                                  </Row>
+                                </FormGroup>
+                                {this.props.isLoading ? (
+                                  <Spinner color="danger" />
+                                ) : (
+                                    <Button color="success">Create</Button>
+                                  )}
+                              </Form>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                      {/* <Row>
+                        <Col>
+                          <Card>
+                            <CardBody>
+                              <Modal isOpen={this.state.success} toggle={this.toggleSuccess}
+                                className={'modal-success ' + this.props.className}>
+                                <ModalHeader toggle={this.toggleSuccess}>Modal title</ModalHeader>
+                                <ModalBody>
+                                  Registration Successful!
+                                </ModalBody>
+                                <ModalFooter>
+                                  <Button color="secondary" onClick={this.toggleSuccess}>Ok</Button>
+                                </ModalFooter>
+                              </Modal>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row> */}
+                    </Container>
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" onClick={this.toggleLarge}>Do Something</Button>{' '}
                     <Button color="secondary" onClick={this.toggleLarge}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
 
-                <Button onClick={this.toggleSmall} className="mr-1">Launch small modal</Button>
-                <Modal isOpen={this.state.small} toggle={this.toggleSmall}
-                       className={'modal-sm ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleSmall}>Modal title</ModalHeader>
+                <Button onClick={this.toggleLargeView} className="mr-1">View Savings Products</Button>
+                <Modal isOpen={this.state.largeView} toggle={this.toggleLargeView}
+                  className={'modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleLargeView}>Savings Products</ModalHeader>
                   <ModalBody>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -129,98 +216,9 @@ class Modals extends Component {
                     culpa qui officia deserunt mollit anim id est laborum.
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" onClick={this.toggleSmall}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleSmall}>Cancel</Button>
+                    <Button color="secondary" onClick={this.toggleLargeView}>Cancel</Button>
                   </ModalFooter>
                 </Modal>
-
-                <hr />
-
-                <Button color="primary" onClick={this.togglePrimary} className="mr-1">Primary modal</Button>
-                <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
-                       className={'modal-primary ' + this.props.className}>
-                  <ModalHeader toggle={this.togglePrimary}>Modal title</ModalHeader>
-                  <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={this.togglePrimary}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.togglePrimary}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Button color="success" onClick={this.toggleSuccess} className="mr-1">Success modal</Button>
-                <Modal isOpen={this.state.success} toggle={this.toggleSuccess}
-                       className={'modal-success ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleSuccess}>Modal title</ModalHeader>
-                  <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="success" onClick={this.toggleSuccess}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleSuccess}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Button color="warning" onClick={this.toggleWarning} className="mr-1">Warning modal</Button>
-                <Modal isOpen={this.state.warning} toggle={this.toggleWarning}
-                       className={'modal-warning ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleWarning}>Modal title</ModalHeader>
-                  <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="warning" onClick={this.toggleWarning}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleWarning}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Button color="danger" onClick={this.toggleDanger} className="mr-1">Danger modal</Button>
-                <Modal isOpen={this.state.danger} toggle={this.toggleDanger}
-                       className={'modal-danger ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleDanger}>Modal title</ModalHeader>
-                  <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="danger" onClick={this.toggleDanger}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleDanger}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
-                <Button color="info" onClick={this.toggleInfo} className="mr-1">Info modal</Button>
-                <Modal isOpen={this.state.info} toggle={this.toggleInfo}
-                       className={'modal-info ' + this.props.className}>
-                  <ModalHeader toggle={this.toggleInfo}>Modal title</ModalHeader>
-                  <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button color="primary" onClick={this.toggleInfo}>Do Something</Button>{' '}
-                    <Button color="secondary" onClick={this.toggleInfo}>Cancel</Button>
-                  </ModalFooter>
-                </Modal>
-
               </CardBody>
             </Card>
           </Col>
@@ -229,5 +227,21 @@ class Modals extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  isLoading: state.savingsProduct.isLoading,
+  savingsProductCreated: state.savingsProduct.savingsProductCreated,
+  error: state.customer.error
+});
 
-export default Modals;
+const mapDispatchToProps = dispatch => ({
+
+  onAddSavingsProductInit: () => dispatch(addSavingsProductInit()),
+  onAddSavingsProduct: savingsProductData => dispatch(addSavingsProduct(savingsProductData))
+});
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Modals);
+

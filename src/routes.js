@@ -34,10 +34,10 @@ const routes = [
   { path: '/staff/edit/:staffId',exact: true, name: ' Edit Staff', component: EditStaff },
 
   //customer routes
-  { path: '/customer', exact: true, name: 'Customer',component: Customers},
-  { path: '/customer/add-customer',exact: true, name: 'Add customer', component: AddCustomer },
-  { path: '/customer/all-customer', exact:true, name: 'All customers', component: Customers },
-  { path: '/customer/:customerId', exact: true, name: 'customer details', component: CustomerDetails },
+  { path: '/customers', exact: true, name: 'Customers',component: Customers},
+  { path: '/customers/add-customer',exact: true, name: 'Add customer', component: AddCustomer },
+  { path: '/customers/all-customer', exact:true, name: 'All customers', component: Customers },
+  { path: '/customers/:customerId', exact: true, name: 'customer details', component: CustomerDetails },
   { path: '/customers/edit/:customerId',exact: true, name: 'Edit Customer', component: EditCustomer },
   // { path: '/customer/del/:customerId', exact: true, name: 'customer delete', component: DeleteCustomer },
 

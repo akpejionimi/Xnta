@@ -192,7 +192,7 @@ class Add_Customer extends Component {
                         </Col>
                     </Row>
                   </FormGroup>
-                  <FormGroup>
+                  <FormGroup> 
                     <Row>
                       <Col md={{ size: 6 }}>
                         <FormGroup>

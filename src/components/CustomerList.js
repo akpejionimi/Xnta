@@ -18,7 +18,7 @@ import { deleteCustomer, deleteCustomerInit } from "../components/Store/actions/
 
 function CustomerRow(props) {
   const customer = props.customer
-  const CustomerLink = `/customer/${customer.customerId}`
+  const CustomerLink = `/customers/${customer.customerId}`
   const CustomerEditLink = `/customers/edit/${customer.customerId}`
   
 

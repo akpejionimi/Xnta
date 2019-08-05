@@ -32,7 +32,7 @@ function StaffRow(props) {
   }
   return (
     <tr key={staff.staffId.toString()}>
-      <th scope="row"><Link to={StaffLink}>{staff.staffId}</Link></th>
+      {/* <th scope="row"><Link to={StaffLink}>{staff.staffId}</Link></th> */}
       <td><Link to={StaffLink}>{staff.fullName}</Link></td>
       <td>{staff.email}</td>
       <td>{staff.phoneNo}</td>
@@ -72,7 +72,7 @@ class StaffList extends Component {
               <Table responsive hover>
                 <thead>
                   <tr>
-                    <th scope="col">CustomerId</th>
+                    {/* <th scope="col">CustomerId</th> */}
                     <th scope="col">FullName</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>

@@ -116,7 +116,7 @@ class Edit_Customer extends Component {
                         <Card>
                             <CardHeader tag="h2">Edit Customer</CardHeader>
                             <CardBody>
-                                {this.props.customerUpdated && <Redirect to={`/customer/${this.props.customer.customerId}`}/>}
+                                {this.props.customerUpdated && <Redirect to={`/customers/${this.props.customer.customerId}`} />}
                                 <Form onSubmit={this.save} action="POST" encType="application/json">
                                     {this.props.error && (
                                         < Alert color="danger">{this.props.error.msg}</Alert>
@@ -168,6 +168,18 @@ class Edit_Customer extends Component {
                                                         onChange={this.onChanged} />
                                                 </FormGroup>
                                             </Col>
+                                            <Col md={{ size: 6 }}>
+                                                <FormGroup>
+                                                    <Label for="Gender">Gender</Label>
+                                                    <Input type="select" name="gender" id="gender"
+                                                        onChange={this.onChanged}
+                                                        defaultValue={this.props.customer && this.props.customer.gender}>
+                                                        <option value="">Select Gender</option>
+                                                        <option value="Male">Male</option>
+                                                        <option value="Female">Female</option>
+                                                    </Input>
+                                                </FormGroup>
+                                            </Col>
                                             {/* <Col md={{ size: 6 }}>
                         <FormGroup>
                           <Label for="Customer Photo">Profile Picture</Label>
@@ -184,6 +196,23 @@ class Edit_Customer extends Component {
                         </FormGroup>
                       </Col> */}
                                         </Row>
+                                        <FormGroup>
+                                            <Row>
+                                                <Col md={{ size: 6 }}>
+                                                    <FormGroup>
+                                                        <Label for="Status">Status</Label>
+                                                        <Input type="select" name="status" id="status"
+                                                            onChange={this.onChanged}
+                                                            defaultValue={this.props.customer && this.props.customer.status}>
+                                                            <option value="">Select Status</option>
+                                                            <option value="Active">Active</option>
+                                                            <option value="Inactive">Inactive</option>
+                                                            <option value="Pending">Pending</option>
+                                                        </Input>
+                                                    </FormGroup>
+                                                </Col>
+                                            </Row>
+                                        </FormGroup>
                                     </FormGroup>
                                     <FormGroup>
                                         <Row>

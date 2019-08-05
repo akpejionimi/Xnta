@@ -20,17 +20,17 @@ export default {
     {
       name: 'Staff',
       url: '/staff',
-      icon: 'icon-puzzle',
+      icon: 'icon-people',
       children: [
         {
           name: 'All staff',
           url: '/staff/all-staff',
-          icon: 'icon-puzzle',
+          icon: 'icon-people',
         },
         {
           name: 'Add Staff',
           url: '/staff/add-staff',
-          icon: 'icon-puzzle',
+          icon: 'icon-user-follow',
           badge: {
             variant: 'info',
             text: 'NEW',
@@ -41,18 +41,18 @@ export default {
     {
       name: 'Customer',
       url: '/customer',
-      icon: 'icon-star',
+      icon: 'icon-people',
       children: [
         {
           name: 'All customers',
-          url: '/customer/all-customer',
-          icon: 'icon-star',
+          url: '/customers/all-customer',
+          icon: 'icon-people',
           
         },
         {
           name: 'Add customer',
-          url: '/customer/add-customer',
-          icon: 'icon-star',
+          url: '/customers/add-customer',
+          icon: 'icon-user-follow',
           badge: {
             variant: 'secondary',
             text: 'NEW',

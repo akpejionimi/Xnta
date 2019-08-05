@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 // import * as dateFns from 'date-fns';
 import {
 	Spinner,
@@ -8,6 +9,7 @@ import {
 	CardBody,
 	CardHeader,
 	Col,
+	Button,
 	Row,
 	Table
 } from "reactstrap";
@@ -21,6 +23,10 @@ class StaffDetail extends Component {
 	};
 
 	render() {
+		const btnStyle = {
+            float: 'right',
+           
+          };
 		const { staff } = this.props;
 		const staffDetail = staff ? Object.entries(staff) : [['staffId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
 		return (
@@ -29,7 +35,7 @@ class StaffDetail extends Component {
 					<Col lg={{ size: 6, offset: 3 }} >
 						<Card>
 							<CardHeader>
-								<strong><i className="icon-info pr-1"></i>Staff Id: {this.props.match.params.staffId}</strong>
+							<Link to={`/staff/edit/${this.props.match.params.staffId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Staff</Button></Link>
 							</CardHeader>
 							<CardBody>
 								<Container>
