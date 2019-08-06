@@ -18,6 +18,8 @@ const EditCustomer =React.lazy(() => import('./views/Icons/Add-customer/EditCust
 const Alerts = React.lazy(() => import('./views/Notifications/Alerts'));
 const Badges = React.lazy(() => import('./views/Notifications/Badges'));
 const Modals = React.lazy(() => import('./views/Notifications/Modals'));
+const SavingsProductDetails = React.lazy(() => import ('./views/Notifications/Modals/savingsProductDetails'))
+
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 
@@ -42,10 +44,13 @@ const routes = [
   // { path: '/customer/del/:customerId', exact: true, name: 'customer delete', component: DeleteCustomer },
 
   //Products
-  { path: '/product', exact: true, name: 'Products', component: Alerts },
+  { path: '/product', exact: true, name: 'Products', component: Alerts }, 
   { path: '/product/product-sign-up', name: 'Product Sign-up', component: Alerts },
   { path: '/product/product-payment', name: 'Product Payments', component: Badges },
   { path: '/product/product-savings', name: 'Product Savings', component: Modals },
+  { path: '/savings-product/:productId', name: 'Product Details', component: SavingsProductDetails },
+
+
   { path: '/settings', name: 'Settings', component: Charts },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },

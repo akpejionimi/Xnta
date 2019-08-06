@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import AllSavingsProduct from "../Modals/allSavingsProducts"
 import {
   Button,
   Card,
@@ -39,16 +40,24 @@ class Modals extends Component {
     this.toggle = this.toggle.bind(this);
     this.toggleLarge = this.toggleLarge.bind(this);
     this.toggleLargeView = this.toggleLargeView.bind(this);
+    this.toggleSuccess = this.toggleSuccess.bind(this);
 
-    // let savProdCreationAction = false;
-    // store.subscribe(() => {
-    //   const newVal = store.getState().savingsProduct.savingsProductCreated;
+    let savProdCreationAction = false;
+    store.subscribe(() => {
+      const newVal = store.getState().savingsProduct.savingsProductCreated;
 
-    //   if (savProdCreationAction !== newVal && newVal) {
-    //     savProdCreationAction = newVal;
-    //     this.toggleSuccess();
-    //   }
-    // });
+      if (savProdCreationAction !== newVal && newVal) {
+        savProdCreationAction = newVal;
+        this.toggleSuccess();
+      }
+    });
+  }
+
+  
+  toggleSuccess() {
+    this.setState({
+      success: !this.state.success,
+    });
   }
 
   toggle() {
@@ -83,7 +92,7 @@ class Modals extends Component {
       moneyValue: this.state.moneyValue,
     };
     this.props.onAddSavingsProduct(JSON.stringify(formData));
-    console.log(formData);
+    // console.log(formData);
 
   };
 
@@ -179,15 +188,15 @@ class Modals extends Component {
                           </Card>
                         </Col>
                       </Row>
-                      {/* <Row>
+                      <Row>
                         <Col>
                           <Card>
                             <CardBody>
                               <Modal isOpen={this.state.success} toggle={this.toggleSuccess}
                                 className={'modal-success ' + this.props.className}>
-                                <ModalHeader toggle={this.toggleSuccess}>Modal title</ModalHeader>
+                                <ModalHeader toggle={this.toggleSuccess}>Product Created</ModalHeader>
                                 <ModalBody>
-                                  Registration Successful!
+                                  Created Successfully!
                                 </ModalBody>
                                 <ModalFooter>
                                   <Button color="secondary" onClick={this.toggleSuccess}>Ok</Button>
@@ -196,7 +205,7 @@ class Modals extends Component {
                             </CardBody>
                           </Card>
                         </Col>
-                      </Row> */}
+                      </Row>
                     </Container>
                   </ModalBody>
                   <ModalFooter>
@@ -209,11 +218,7 @@ class Modals extends Component {
                   className={'modal-lg ' + this.props.className}>
                   <ModalHeader toggle={this.toggleLargeView}>Savings Products</ModalHeader>
                   <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
+                   <AllSavingsProduct/>
                   </ModalBody>
                   <ModalFooter>
                     <Button color="secondary" onClick={this.toggleLargeView}>Cancel</Button>

@@ -13,30 +13,32 @@ import {
     Table
 } from "reactstrap";
 
-import { getSingleCustomer } from "../../../components/Store/actions/customer";
+import { getSingleSavingsProduct } from "../../../components/Store/actions/savingsproduct";
 
-class CustomerDetails extends Component {
+class SavingsProductDetails extends Component {
     componentDidMount = () => {
-        const customerId = +this.props.match.params.customerId;
-        this.props.onGetSingleCustomer(customerId);
-
+        const productId = +this.props.match.params.productId;
+        this.props.onGetSingleSavingsProduct(productId);
+        console.log(productId);
+        
     };
- 
+
     render() {
         const btnStyle = {
             float: 'right',
            
           };
-        // const {customer} = customer.find(customer => customer.customerId.toString() === this.props.match.params.customerId)
-        const { customer } = this.props;
-        const customerDetail = customer ? Object.entries(customer) : [['customerId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
+        const { savingsProduct } = this.props;
+        console.log(savingsProduct);
+        
+        const SavingsProductDetail = savingsProduct ? Object.entries(savingsProduct) : [['productId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
         return (
             <div className="animated fadeIn">
                 <Row>
                     <Col lg={{ size: 6, offset: 3 }} >
                         <Card>
                             <CardHeader className="tx-right">
-                                <Link to={`/customers/edit/${this.props.match.params.customerId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Customer</Button></Link>
+                                <Link to={`/savings-product/edit/${this.props.match.params.productId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Product</Button></Link>
 
                             </CardHeader>
                             <CardBody>
@@ -50,7 +52,7 @@ class CustomerDetails extends Component {
                                             <Table responsive striped hover>
                                                 <tbody>
                                                     {
-                                                        customerDetail.map(([key, value]) => {
+                                                        SavingsProductDetail.map(([key, value]) => {
                                                             return (
 
                                                                 <tr key={key}>
@@ -79,15 +81,15 @@ class CustomerDetails extends Component {
 }
 
 const mapStateToProps = state => ({
-    customer: state.customer.customer,
-    isLoading: state.customer.isLoading
+    savingsProduct: state.savingsProduct.savingsProduct,
+    isLoading: state.savingsProduct.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({
-    onGetSingleCustomer: customerId => dispatch(getSingleCustomer(customerId))
+    onGetSingleSavingsProduct: productId => dispatch(getSingleSavingsProduct(productId))
 });
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(CustomerDetails);
+)(SavingsProductDetails);

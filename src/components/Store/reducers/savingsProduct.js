@@ -26,7 +26,7 @@ const reducer = (state = initialState, action) => {
 			};
 		case types.ADD_SAVINGS_PRODUCT_INIT:
 			return {
-				...state,
+				...state, 
 				savingsProductCreated: false,
 				error: null
 			};

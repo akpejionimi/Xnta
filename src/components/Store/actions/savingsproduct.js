@@ -8,10 +8,10 @@ export const loading = () => {
 	};
 };
 
-export const getSavingsProductSuccess = savingsProduct => {
+export const getSavingsProductSuccess = savingsProducts => {
 	return {
 		type: types.GET_SAVINGS_PRODUCT_SUCCESS,
-		savingsProduct
+		savingsProducts
 	};
 };
 
@@ -40,10 +40,12 @@ export const getSingleSavingsProduct = productId => {
 	return dispatch => {
 		dispatch(loading());
 		axios
-			.get(`/savings-prouct/${productId}`)
+			.get(`/savings-product/${productId}`)
 			.then(res => {	
-				res.data.createdAt = dateFns.format(res.data.createdAt, 'DD-MM-YYYY')
-				res.data.updatedAt = dateFns.format(res.data.updatedAt, 'DD-MM-YYYY')
+                console.log(res);
+                
+				// res.data.createdAt = dateFns.format(res.data.createdAt, 'DD-MM-YYYY')
+				// res.data.updatedAt = dateFns.format(res.data.updatedAt, 'DD-MM-YYYY')
 				dispatch({ type: types.GET_SAVINGS_PRODUCT_SUCCESS, savingsProduct: res.data });
 			})
 			.catch(err => dispatch(errorOccured(err)));
@@ -117,7 +119,7 @@ export const addSavingsProduct =  savingsProductData => {
 			.then(res => {
                 console.log(res);
                 
-				return dispatch({ type: types.ADD_SAVINGS_PRODUCT_SUCCESS});
+				return dispatch({ type: types.ADD_SAVINGS_PRODUCT_SUCCESS, savingsProduct: res.data});
 			})
 			.then(() => {
 				dispatch(addSavingsProductInit());
