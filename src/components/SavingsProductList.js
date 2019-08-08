@@ -19,16 +19,16 @@ import {
 function SavingsProductRow(props) {
   const savingsProduct = props.savingsProduct
   const savingsProductLink = `/savings-product/${savingsProduct.productId}`
-  const savProdEditLink = `/savings-product/edit/${savingsProduct.productId}`
+  const savProdEditLink = `/savings-products/edits/${savingsProduct.productId}`
   
 
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          // entryDate === 'Banned' ? 'danger' :
-            'primary'
-  }
+  // const getBadge = (status) => {
+  //   return status === 'Active' ? 'success' :
+  //     status === 'Inactive' ? 'secondary' :
+  //       status === 'Pending' ? 'warning' :
+  //         // entryDate === 'Banned' ? 'danger' :
+  //           'primary'
+  // }
   return (
     <tr key={savingsProduct.productId.toString()}>
       <td><Link to={savingsProductLink}>{savingsProduct.productName}</Link></td>

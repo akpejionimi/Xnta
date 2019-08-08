@@ -47,7 +47,7 @@ export default {
           name: 'All customers',
           url: '/customers/all-customer',
           icon: 'icon-people',
-          
+
         },
         {
           name: 'Add customer',
@@ -76,26 +76,26 @@ export default {
     {
       name: 'Products',
       url: '/product',
-      icon: 'icon-bell',
+      icon: 'icon-diamond',
       children: [
         {
-          name: 'Products Sign ups',
-          url: '/product/product-sign-up',
-          icon: 'icon-bell',
-        },
-        {
-          name: 'Product Payments',
-          url: '/product/product-payment',
-          icon: 'icon-bell',
+          name: 'Products Subscription',
+          url: '/products/subscription',
+          icon: 'icon-credit-card',
         },
         {
           name: 'Savings product',
           url: '/product/product-savings',
-          icon: 'icon-bell',
+          icon: 'icon-wallet',
         },
+        {
+          name: 'Product Payments',
+          url: '/product/product-payment',
+          icon: 'icon-credit-card',
+        }
       ],
     },
-    
+
     {
       divider: true,
     },
@@ -141,6 +141,6 @@ export default {
       icon: 'icon-ban',
       attributes: { disabled: true },
     },
-    
+
   ],
 };

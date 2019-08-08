@@ -1,139 +1,200 @@
 import React, { Component } from 'react';
-import { Alert, Card, CardBody, CardHeader, Col, Row } from 'reactstrap';
+import { connect } from 'react-redux';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Col,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Row,
+  FormGroup,
+  Input,
+  Label,
+  Alert,
+  Spinner,
+  Container,
+  Form,
+} from 'reactstrap';
+import store from '../../../components/Store';
+import { addSavingsProduct, addSavingsProductInit } from "../../../components/Store/actions/savingsproduct";
 
 class Alerts extends Component {
+
   constructor(props) {
     super(props);
-
     this.state = {
-      visible: true,
+      modal: false,
+      large: false,
+      largeView: false,
+      productName: "",
+      moneyValue: "",
+      productDuration: "",
+      success: false
     };
 
-    this.onDismiss = this.onDismiss.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.toggleLarge = this.toggleLarge.bind(this);
+    this.toggleLargeView = this.toggleLargeView.bind(this);
+    this.toggleSuccess = this.toggleSuccess.bind(this);
+
+    let savProdCreationAction = false;
+    store.subscribe(() => {
+      const newVal = store.getState().savingsProduct.savingsProductCreated;
+
+      if (savProdCreationAction !== newVal && newVal) {
+        savProdCreationAction = newVal;
+        this.toggleSuccess();
+      }
+    });
   }
 
-  onDismiss() {
-    this.setState({ visible: false });
+  
+  toggleSuccess() {
+    this.setState({
+      success: !this.state.success,
+    });
   }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  }
+
+  toggleLarge() {
+    this.setState({
+      large: !this.state.large,
+    });
+  }
+
+  toggleLargeView() {
+    this.setState({
+      largeView: !this.state.largeView,
+    });
+  }
+  onChanged = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+
+  };
+  save = e => {
+    e.preventDefault();
+    e.target.reset();
+    const formData = {
+      productName: this.state.productName,
+      productDuration: this.state.productDuration,
+      moneyValue: this.state.moneyValue,
+    };
+    this.props.onAddSavingsProduct(JSON.stringify(formData));
+    // console.log(formData);
+
+  };
 
   render() {
     return (
       <div className="animated fadeIn">
         <Row>
-          <Col xs="12" md="6">
+          <Col>
             <Card>
               <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Alerts</strong>
-                <div className="card-header-actions">
-                  <a href="https://reactstrap.github.io/components/alerts/" rel="noreferrer noopener" target="_blank" className="card-header-action">
-                    <small className="text-muted">docs</small>
-                  </a>
-                </div>
+                <i className="fa fa-align-justify"></i> Product Subscription
               </CardHeader>
               <CardBody>
-                <Alert color="primary">
-                  This is a primary alert — check it out!
-                </Alert>
-                <Alert color="secondary">
-                  This is a secondary alert — check it out!
-                </Alert>
-                <Alert color="success">
-                  This is a success alert — check it out!
-                </Alert>
-                <Alert color="danger">
-                  This is a danger alert — check it out!
-                </Alert>
-                <Alert color="warning">
-                  This is a warning alert — check it out!
-                </Alert>
-                <Alert color="info">
-                  This is a info alert — check it out!
-                </Alert>
-                <Alert color="light">
-                  This is a light alert — check it out!
-                </Alert>
-                <Alert color="dark">
-                  This is a dark alert — check it out!
-                </Alert>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Alerts</strong>
-                <small> use <code>.alert-link</code> to provide links</small>
-              </CardHeader>
-              <CardBody>
-                <Alert color="primary">
-                  {/*eslint-disable-next-line*/}
-                  This is a primary alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="secondary">
-                  {/*eslint-disable-next-line*/}
-                  This is a secondary alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="success">
-                  {/*eslint-disable-next-line*/}
-                  This is a success alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="danger">
-                  {/*eslint-disable-next-line*/}
-                  This is a danger alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="warning">
-                  {/*eslint-disable-next-line*/}
-                  This is a warning alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="info">
-                  {/*eslint-disable-next-line*/}
-                  This is a info alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="light">
-                  {/*eslint-disable-next-line*/}
-                  This is a light alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-                <Alert color="dark">
-                  {/*eslint-disable-next-line*/}
-                  This is a dark alert with <a href="#" className="alert-link">an example link</a>. Give it a click if you like.
-                </Alert>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Alerts</strong>
-                <small>additional content</small>
-              </CardHeader>
-              <CardBody>
-                <Alert color="success">
-                  <h4 className="alert-heading">Well done!</h4>
-                  <p>
-                    Aww yeah, you successfully read this important alert message. This example text is going
-                    to run a bit longer so that you can see how spacing within an alert works with this kind
-                    of content.
-                  </p>
-                  <hr />
-                  <p className="mb-0">
-                    Whenever you need to, be sure to use margin utilities to keep things nice and tidy.
-                  </p>
-                </Alert>
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xs="12" md="6">
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i><strong>Alerts</strong>
-                <small>dismissing</small>
-              </CardHeader>
-              <CardBody>
-                <Alert color="info" isOpen={this.state.visible} toggle={this.onDismiss}>
-                  I am an alert and I can be dismissed!
-                </Alert>
+                <Button onClick={this.toggleLarge} className="mr-1">Add Subscription</Button>
+                <Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                  className={'modal-lg ' + this.props.className}>
+                  <ModalHeader toggle={this.toggleLarge}>Savings Product</ModalHeader>
+                  <ModalBody>
+                    <Container className="card-design">
+                      <Row>
+                        <Col md={{ size: 12 }}>
+                          <Card>
+                            <CardHeader tag="h2">Add Subscription</CardHeader>
+                            <CardBody>
+                              {/* {this.props.customerCreated && !this.state.customerCreationAction ? this.openModal() : ""} */}
+                              <Form onSubmit={this.save} action="POST" encType="application/json">
+                                {this.props.error && (
+                                  < Alert color="danger">{this.props.error.msg}</Alert>
+                                )}
+                                <FormGroup>
+                                  <Row>
+                                    <Col md={{ size: 6 }}>
+                                      <FormGroup>
+                                        <Label for="name">Product Name</Label>
+                                        <Input
+                                          type="text"
+                                          name="productName"
+                                          id="productName"
+                                          placeholder="Product Name"
+                                          // required="required"
+                                          onChange={this.onChanged}
+                                        />
+                                      </FormGroup>
+                                    </Col>
+                                    <Col md={{ size: 6 }}>
+                                      <FormGroup>
+                                        <Label for="Customer Name">Customer Name</Label>
+                                        <select onChange={this.onChanged}>
+                                        <option>Select Customer</option>
+                                        </select>
+                                      </FormGroup>
+                                    </Col>
+                                  </Row>
+                                </FormGroup>
+
+                                <FormGroup>
+                                  <Row>
+                                    <Col md={{ size: 6 }}>
+                                      <FormGroup>
+                                        <Label for="SignUp Date">SignUp Date</Label>
+                                        <Input
+                                          type="date"
+                                          name="SignUp Date"
+                                          id="SignUp Date"
+                                          onChange={this.onChanged} />
+                                      </FormGroup>
+                                    </Col>
+                                  </Row>
+                                </FormGroup>
+                                {this.props.isLoading ? (
+                                  <Spinner color="danger" />
+                                ) : (
+                                    <Button color="success">Create</Button>
+                                  )}
+                              </Form>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Card>
+                            <CardBody>
+                              <Modal isOpen={this.state.success} toggle={this.toggleSuccess}
+                                className={'modal-success ' + this.props.className}>
+                                <ModalHeader toggle={this.toggleSuccess}>Product Created</ModalHeader>
+                                <ModalBody>
+                                  Created Successfully!
+                                </ModalBody>
+                                <ModalFooter>
+                                  <Button color="secondary" onClick={this.toggleSuccess}>Ok</Button>
+                                </ModalFooter>
+                              </Modal>
+                            </CardBody>
+                          </Card>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="secondary" onClick={this.toggleLarge}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
               </CardBody>
             </Card>
           </Col>
@@ -142,5 +203,21 @@ class Alerts extends Component {
     );
   }
 }
+const mapStateToProps = state => ({
+  isLoading: state.savingsProduct.isLoading,
+  savingsProductCreated: state.savingsProduct.savingsProductCreated,
+  error: state.customer.error
+});
 
-export default Alerts;
+const mapDispatchToProps = dispatch => ({
+
+  onAddSavingsProductInit: () => dispatch(addSavingsProductInit()),
+  onAddSavingsProduct: savingsProductData => dispatch(addSavingsProduct(savingsProductData))
+});
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Alerts);
+

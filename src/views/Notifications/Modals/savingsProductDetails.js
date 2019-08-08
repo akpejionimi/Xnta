@@ -22,23 +22,21 @@ class SavingsProductDetails extends Component {
         console.log(productId);
         
     };
-
+ 
     render() {
         const btnStyle = {
             float: 'right',
-           
           };
+        // const {savingsProduct} = savingsProduct.find(savingsProduct => savingsProduct.productId.toString() === this.props.match.params.productId)
         const { savingsProduct } = this.props;
-        console.log(savingsProduct);
-        
-        const SavingsProductDetail = savingsProduct ? Object.entries(savingsProduct) : [['productId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
+        const savingsProductDetail = savingsProduct ? Object.entries(savingsProduct) : [['productId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
         return (
             <div className="animated fadeIn">
                 <Row>
                     <Col lg={{ size: 6, offset: 3 }} >
                         <Card>
                             <CardHeader className="tx-right">
-                                <Link to={`/savings-product/edit/${this.props.match.params.productId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Product</Button></Link>
+                                <Link to={`/savings-products/edits/${this.props.match.params.productId}`}><Button style={btnStyle} color="outline-primary" size="lg">Edit Product</Button></Link>
 
                             </CardHeader>
                             <CardBody>
@@ -52,7 +50,7 @@ class SavingsProductDetails extends Component {
                                             <Table responsive striped hover>
                                                 <tbody>
                                                     {
-                                                        SavingsProductDetail.map(([key, value]) => {
+                                                        savingsProductDetail.map(([key, value]) => {
                                                             return (
 
                                                                 <tr key={key}>
@@ -86,7 +84,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onGetSingleSavingsProduct: productId => dispatch(getSingleSavingsProduct(productId))
+    onGetSingleSavingsProduct : productId => dispatch(getSingleSavingsProduct(productId))
 });
 
 export default connect(

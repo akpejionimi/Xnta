@@ -29,6 +29,8 @@ class CustomerDetails extends Component {
           };
         // const {customer} = customer.find(customer => customer.customerId.toString() === this.props.match.params.customerId)
         const { customer } = this.props;
+        console.log(customer);
+        
         const customerDetail = customer ? Object.entries(customer) : [['customerId', (<span><i className="text-muted icon-ban"></i> Not found</span>)]]
         return (
             <div className="animated fadeIn">

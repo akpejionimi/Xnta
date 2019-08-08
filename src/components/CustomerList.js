@@ -40,8 +40,8 @@ function CustomerRow(props) {
       <td><Link to={CustomerLink}><Badge color={getBadge(customer.status)}>{customer.status}</Badge></Link></td>
       <td>{dateFns.format(customer.registrationDate,"DD-MM-YYYY")}</td>
       <td>{dateFns.format(customer.entryDate,"DD-MM-YYYY")}</td>
-      <td><Link to={CustomerEditLink}><Button color="primary">Edit</Button></Link>
-          <Button onClick={() => props.removeCustomer(customer)} color="danger">Remove</Button>
+      <td><Link to={CustomerEditLink}><Button color="primary"><i className= "fa fa-edit"></i></Button></Link>
+          <Button onClick={() => props.removeCustomer(customer)} color="danger"><i className= "fa fa-trash"></i></Button>
           </td>
     </tr>
   )

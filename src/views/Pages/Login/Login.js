@@ -50,7 +50,7 @@ class Auth extends Component {
         {this.props.isAuth && <Redirect to="/dashboard" />}
         <Row>
           <Col md={{ size: 6, offset: 3 }}>
-            <Card>
+            <Card className="mx-auto">
                 <CardHeader tag="h2">Login</CardHeader>
               <CardBody>
                 {error && <Alert color="danger">{this.props.error.msg}</Alert>}

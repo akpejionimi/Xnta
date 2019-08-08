@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AllSavingsProduct from "../Modals/allSavingsProducts"
-import {
+import { Redirect } from "react-router-dom"
+import { 
   Button,
   Card,
   CardBody,
@@ -115,9 +116,9 @@ class Modals extends Component {
                       <Row>
                         <Col md={{ size: 12 }}>
                           <Card>
-                            <CardHeader tag="h2">Register Customer</CardHeader>
+                            <CardHeader tag="h2">Add Product</CardHeader>
                             <CardBody>
-                              {/* {this.props.customerCreated && !this.state.customerCreationAction ? this.openModal() : ""} */}
+                              {this.props.savingsProductCreated && <Redirect to="/product/product-savings"/>}
                               <Form onSubmit={this.save} action="POST" encType="application/json">
                                 {this.props.error && (
                                   < Alert color="danger">{this.props.error.msg}</Alert>
@@ -132,7 +133,7 @@ class Modals extends Component {
                                           name="productName"
                                           id="productName"
                                           placeholder="Product Name"
-                                          // required="required"
+                                          required="required"
                                           onChange={this.onChanged}
                                         />
                                       </FormGroup>
@@ -149,7 +150,7 @@ class Modals extends Component {
                                           // value=""
                                           name="moneyValue"
                                           id="moneyValue"
-                                          // required="required"
+                                          required="required"
                                           // type="decimal"
                                           // name="moneyValue"
                                           // id="moneyValue"
@@ -172,7 +173,7 @@ class Modals extends Component {
                                           id="productDuration"
                                           placeholder="Product Duration"
                                           maxLength="4"
-                                          // required="required"
+                                          required="required"
                                           onChange={this.onChanged} />
                                       </FormGroup>
                                     </Col>
@@ -228,7 +229,12 @@ class Modals extends Component {
             </Card>
           </Col>
         </Row>
+        <div className="product-created">
+            <AllSavingsProduct/>
       </div>
+      </div>
+      
+
     );
   }
 }

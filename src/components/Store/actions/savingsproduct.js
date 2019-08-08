@@ -42,11 +42,10 @@ export const getSingleSavingsProduct = productId => {
 		axios
 			.get(`/savings-product/${productId}`)
 			.then(res => {	
-                console.log(res);
-                
-				// res.data.createdAt = dateFns.format(res.data.createdAt, 'DD-MM-YYYY')
-				// res.data.updatedAt = dateFns.format(res.data.updatedAt, 'DD-MM-YYYY')
-				dispatch({ type: types.GET_SAVINGS_PRODUCT_SUCCESS, savingsProduct: res.data });
+                // console.log(res);
+				res.data.createdAt = dateFns.format(res.data.createdAt, 'DD-MM-YYYY')
+				res.data.updatedAt = dateFns.format(res.data.updatedAt, 'DD-MM-YYYY')
+				dispatch({ type: types.GET_SINGLE_SAVINGS_SUCCESS, savingsProduct: res.data });
 			})
 			.catch(err => dispatch(errorOccured(err)));
 	};
